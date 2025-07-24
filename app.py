@@ -9,8 +9,6 @@ from langchain.chains.combine_documents import create_stuff_documents_chain
 
 
 def main():
-    
-
     #  App Title and Description
     st.title("📽️ YouTube & 🌐 Website Summarizer")
     st.subheader("⚡ Get structured summaries from any YouTube video or web article!")
@@ -42,11 +40,17 @@ def main():
         try:
             with st.spinner(" Loading and analyzing content..."):
                 if "youtube.com" in url or "youtu.be" in url:
-                    loader = YoutubeLoader.from_youtube_url(url, add_video_info=False)
+                    loader = YoutubeLoader.from_youtube_url(
+                        url, add_video_info=False, language=["en"]
+                    )
+                    docs = loader.load()
+                    if not docs:
+                        st.warning("No transcript found. Transcripts might be disabled for this video.")
+                        return
                 else:
                     loader = UnstructuredURLLoader(urls=[url])
+                    docs = loader.load()
 
-                docs = loader.load()
                 llm = ChatGroq(groq_api_key=groq_api_key, model_name=model)
 
             st.success(" Content loaded successfully!")
