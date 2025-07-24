@@ -259,12 +259,12 @@ class YoutubeLoader(BaseLoader):
             self._metadata.update(video_info)
 
         try:
-            transcript_list = YouTubeTranscriptApi.list_transcripts(self.video_id)
+            transcript_list = YouTubeTranscriptApi().list(self.video_id)
         except TranscriptsDisabled:
             return []
 
         try:
-            transcript = YouTubeTranscriptApi().list(self.video_id)
+            transcript = transcript_list.find_transcript(self.language)
         except NoTranscriptFound:
             transcript = transcript_list.find_transcript(["en"])
 
