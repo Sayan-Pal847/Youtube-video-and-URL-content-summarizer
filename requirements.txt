@@ -11,7 +11,7 @@ duckdb
 pandas
 openai
 validators==0.28.1
-youtube-transcript-api==0.4.4
+youtube-transcript-api
 unstructured
 pytube
 bs4
